@@ -808,14 +808,14 @@ document.getElementById("btnCalc").addEventListener("click", ()=>{
     }
     capYuan = Math.round(capWan * 10000);
   }
-  const guaranteeAmount = roundToWan(purchaseYuan * 1.2);   // 1. 最高限額抵押權擔保同意金額範圍 = 購置金額×1.2（取萬位）
+  const guaranteeAmount = roundToWan(Math.min(purchaseYuan * 1.2, capYuan * 1.2));  // 1. 最高限額抵押權擔保同意金額範圍 = min(購置金額×1.2, 回復上限×1.2)（取萬位）
   const purchaseDisplay = purchaseYuan;                      // 2. 購置金額
   const capTimes12 = capYuan * 1.2;                          // 3. 回復上限×1.2（不取萬位、不四捨五入）
 
   const box = document.getElementById("amtResult");
   box.style.display = "block";
   box.innerHTML = `
-    <div>1. 最高限額抵押權擔保同意金額範圍 ＝ 購置金額 × 1.2（取萬位）＝ <b>${numberToChineseUpper(guaranteeAmount)}</b>
+    <div>1. 最高限額抵押權擔保同意金額範圍 ＝「購置金額×1.2」與「回復上限×1.2」兩者較小值（取萬位）＝ <b>${numberToChineseUpper(guaranteeAmount)}</b>
       <div style="font-size:11px;color:#999;">（${fmt(guaranteeAmount)} 元）</div><span class="noprint-tag">不列印</span></div>
     <div>2. 購置金額 ＝ <b>${numberToChineseUpper(purchaseDisplay)}</b>
       <div style="font-size:11px;color:#999;">（${fmt(purchaseDisplay)} 元）</div><span class="noprint-tag">不列印</span></div>
