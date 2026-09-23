@@ -164,19 +164,18 @@
     white-space:nowrap; pointer-events:none; display:none;
   }
   body.calib .coordTag{display:block;}
-
-  @media print{
+@media print{
     .sidebar{display:none;}
     .previewWrap{padding:0; display:block;}
     #formStage{
-      width:190mm !important;
+      width:100% !important;
       box-shadow:none;
-      margin:0 auto;
+      margin:0;
     }
     .resultCard, .calibBadge, .coordTag{display:none !important;}
     body.calib .field{border:none !important; background:transparent !important;}
     body.calib .circle{opacity:1;}
-    @page{ size:A4; margin:8mm; }
+    @page{ size:A4; margin:3mm; }
   }
 </style>
 </head>
