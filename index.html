@@ -164,18 +164,19 @@
     white-space:nowrap; pointer-events:none; display:none;
   }
   body.calib .coordTag{display:block;}
-@media print{
+
+  @media print{
     .sidebar{display:none;}
     .previewWrap{padding:0; display:block;}
     #formStage{
-      width:100% !important;
+      width:190mm !important;
       box-shadow:none;
-      margin:0;
+      margin:0 auto;
     }
     .resultCard, .calibBadge, .coordTag{display:none !important;}
     body.calib .field{border:none !important; background:transparent !important;}
     body.calib .circle{opacity:1;}
-    @page{ size:A4; margin:3mm; }
+    @page{ size:A4; margin:8mm; }
   }
 </style>
 </head>
@@ -735,13 +736,13 @@ document.getElementById("amtSameCheck").addEventListener("change", function(){
   document.getElementById("amtCapWrap").style.display = this.checked ? "none" : "block";
 });
 function roundToWan(yuan){
-  return Math.round(yuan/10000)*10000;
+  return Math.ceil(yuan/10000)*10000;
 }
 function fmt(n){
   return Number(n).toLocaleString("zh-Hant-TW");
 }
 function numberToChineseUpper(numInput){
-  const num = Math.round(numInput);
+  const num = Math.ceil(numInput);
   if(num === 0) return "零元整";
   const digitChars = ["零","壹","貳","參","肆","伍","陸","柒","捌","玖"];
   const smallUnits = ["","拾","佰","仟"];
@@ -795,7 +796,7 @@ document.getElementById("btnCalc").addEventListener("click", ()=>{
     alert("請輸入有效的購置金額（萬元）");
     return;
   }
-  const purchaseYuan = Math.round(purchaseWan * 10000);
+  const purchaseYuan = Math.ceil(purchaseWan * 10000);
   let capYuan;
   if(document.getElementById("amtSameCheck").checked){
     capYuan = purchaseYuan;
@@ -807,14 +808,14 @@ document.getElementById("btnCalc").addEventListener("click", ()=>{
     }
     capYuan = Math.round(capWan * 10000);
   }
-  const guaranteeAmount = roundToWan(Math.min(purchaseYuan * 1.2, capYuan * 1.2));  // 1. 最高限額抵押權擔保同意金額範圍 = min(購置金額×1.2, 回復上限×1.2)（取萬位）
+  const guaranteeAmount = roundToWan(purchaseYuan * 1.2);   // 1. 最高限額抵押權擔保同意金額範圍 = 購置金額×1.2（取萬位）
   const purchaseDisplay = purchaseYuan;                      // 2. 購置金額
   const capTimes12 = capYuan * 1.2;                          // 3. 回復上限×1.2（不取萬位、不四捨五入）
 
   const box = document.getElementById("amtResult");
   box.style.display = "block";
   box.innerHTML = `
-    <div>1. 最高限額抵押權擔保同意金額範圍 ＝「購置金額×1.2」與「回復上限×1.2」兩者較小值（取萬位）＝ <b>${numberToChineseUpper(guaranteeAmount)}</b>
+    <div>1. 最高限額抵押權擔保同意金額範圍 ＝ 購置金額 × 1.2（取萬位）＝ <b>${numberToChineseUpper(guaranteeAmount)}</b>
       <div style="font-size:11px;color:#999;">（${fmt(guaranteeAmount)} 元）</div><span class="noprint-tag">不列印</span></div>
     <div>2. 購置金額 ＝ <b>${numberToChineseUpper(purchaseDisplay)}</b>
       <div style="font-size:11px;color:#999;">（${fmt(purchaseDisplay)} 元）</div><span class="noprint-tag">不列印</span></div>
